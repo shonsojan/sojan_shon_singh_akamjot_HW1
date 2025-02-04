@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title> Title</title>
+    <title>Movie API</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,27 @@
     <link href="css/main.css" rel="stylesheet">
     <script defer src="js/main.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div class="grid-con">
+      <section class="col-span-full m-col-span-6">
+        <h2>Movies</h2>
+        <div id="character-box">
+
+        </div>
+      </section>
+
+      <div class="col-span-full m-col-span-6">
+        <h2>Review</h2>
+        <section id="review-con">
+
+        </section>
+        <template id="review-template">
+          <h3 class="review-heading"></h3>
+          <p class="review-author"></p>
+          <p class="review-description"></p>
+        </template>
+      </div>
+    </div>
     
   </body>
 </html>
