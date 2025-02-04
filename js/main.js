@@ -3,11 +3,11 @@
     const characterBox = document.querySelector("#character-box");
     const reviewTemplate = document.querySelector("#review-template");
     const reviewCon = document.querySelector("#review-con");
-    const baseUrl = `https://swapi.dev/api/people/`;
+    const baseUrl = `https://swapi.dev/api`;
 
     function getMovies() {
 
-        fetch(`${baseUrl}`)
+        fetch(`${baseUrl}/people`)
         .then(response => response.json())
         .then(function(response) {
             console.log(response);
@@ -21,7 +21,7 @@
                 li.appendChild(a);
                 ul.appendChild(li);
             })
-            movieBox.appendChild(ul);
+            characterBox.appendChild(ul);
         })
         .then(function() {
             const links = document.querySelectorAll("#movie-box li a");
@@ -32,7 +32,7 @@
             })
    
         .catch(function(err) {
-            console,log(err);
+            console.log(err);
         })
     }
 
