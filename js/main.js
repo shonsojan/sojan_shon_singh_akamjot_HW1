@@ -7,7 +7,7 @@
 
     function getMovies() {
 
-        fetch(`${baseUrl}/people`)
+        fetch(`${baseUrl}?people`)
         .then(response => response.json())
         .then(function(response) {
             console.log(response);
@@ -16,7 +16,7 @@
             movies.forEach(movie => {
                 const li = document.createElement("li");
                 const a = document.createElement("a");
-                a.textContent = movie["#TITLE"];
+                a.textContent = movie["#name"];
                 a.dataset.review = movie["#IMDB_ID"];
                 li.appendChild(a);
                 ul.appendChild(li);
