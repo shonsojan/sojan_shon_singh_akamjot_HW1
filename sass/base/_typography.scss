@@ -1,25 +1,25 @@
-body {
-    font-family: 'Open Sans', Arial, sans-serif;
-}
+@use "../abstracts/variables" as v;
 
-p {
-    margin-bottom: 20px;
+body {
+  font-family: v.$body-font-family;
 }
 
 h2 {
-    margin-top: 20px;
-    font-weight: 600;
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-family: v.$heading-font-family;
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 h3 {
-    font-weight: 600;
-    font-size: 18px;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 p {
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 26px;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 26px;
+  margin-bottom: 20px;
 }
