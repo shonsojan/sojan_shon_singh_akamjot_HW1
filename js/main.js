@@ -1,61 +1,112 @@
 (() => {
-
     const characterBox = document.querySelector("#character-box");
     const reviewTemplate = document.querySelector("#review-template");
     const reviewCon = document.querySelector("#review-con");
     const baseUrl = `https://swapi.dev/api`;
 
-    function getMovies() {
 
-        fetch(`${baseUrl}?people`)
-        .then(response => response.json())
-        .then(function(response) {
-            console.log(response);
-            const movies = response.description;
-            const ul = document.createElement("ul");
-            movies.forEach(movie => {
-                const li = document.createElement("li");
-                const a = document.createElement("a");
-                a.textContent = movie["#name"];
-                a.dataset.review = movie["#IMDB_ID"];
-                li.appendChild(a);
-                ul.appendChild(li);
-            })
-            characterBox.appendChild(ul);
-        })
-        .then(function() {
-            const links = document.querySelectorAll("#movie-box li a");
-            links.forEach(function(link){
-                link.addEventListener("click", getReview) 
-                    
-                })
-            })
+
    
-        .catch(function(err) {
-            console.log(err);
-        })
+    function getMoviePoster(episodeId) {
+    
+        const posters = {
+            1: "images/ep1.jpg", 
+            2: "images/ep2.jpg",
+            3: "images/ep3.jpg",
+            4: "images/ep4.jpg",
+            5: "images/ep5.jpg",
+            6: "images/ep6.jpg",
+
+        };
+
+        return posters[episodeId] || "images/no-poster.jpg"; 
     }
 
-    function getReview(e) {
-        // console.log("Review called");
-        // console.log(e.currentTarget.dataset.review);
-        const reviewID = e.currentTarget.dataset.review;
+    function getPeople() {
+        fetch(`${baseUrl}/people/`)  
+            .then(response => response.json())
+            .then(function(response) {
+                console.log(response);
+                const people = response.results;  
+                const ul = document.createElement("ul");
 
-        fetch(`${baseUrl}?tt=${reviewID}`)
-        .then(response => response.json())
-        .then(function(response) {
-            console.log(response.short.review.reviewBody);
-            reviewCon.innerHTML = "";
-            const clone = reviewTemplate.content.cloneNode(true);
-            const reviewDescription = clone.querySelector(".review-description");
-            reviewDescription.innerHTML = response.short.review.reviewBody;
-            reviewCon.appendChild(clone);   
-        })
-        .catch(function(err) {
-            reviewCon.innerHTML = "No review for this movie";
-        })
+                people.forEach(person => {
+                    const li = document.createElement("li"); 
+                    const a = document.createElement("a");                    
+                    a.textContent = person.name; 
+                    a.dataset.characterUrl = person.url;  
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                });
+
+                characterBox.appendChild(ul);
+
+                // Add event listeners to links
+                const links = document.querySelectorAll("#character-box li a");
+                links.forEach(link => {
+                    link.addEventListener("click", getCharacterMovies);
+                });
+            })
+            .catch(function(err) {
+                console.error("Error fetching people:", err);
+                characterBox.innerHTML = "Failed to load characters.";
+            });
     }
-    getMovies();
 
+    function getCharacterMovies(e) {
+        e.preventDefault();
 
+        const characterUrl = e.currentTarget.dataset.characterUrl;
+        
+        reviewCon.innerHTML = `Fetching movies...`;
+
+        fetch(characterUrl)
+            .then(response => response.json())
+            .then(function(response) {
+                console.log("Character movies:", response.films);
+
+                // I saw this way of fetching the exact information needed using promise constructor on youtube i dont know if you like it or allow it.
+                
+                if (!response.films.length) {
+                    reviewCon.innerHTML = "No movies found for this character.";
+                    return;
+                }
+
+                const moviePromises = response.films.map(filmUrl => fetch(filmUrl).then(res => res.json()));
+
+                Promise.all(moviePromises)
+                    .then(movies => {
+                        reviewCon.innerHTML = "";
+                        const clone = reviewTemplate.content.cloneNode(true);
+                        const reviewDescription = clone.querySelector(".review-description");
+
+                        let movieList = `<ul>`;
+                        movies.forEach(movie => {
+                            // Get the movie poster based on episode_id
+                            const poster = getMoviePoster(movie.episode_id);
+
+                            movieList += `
+                                <li>
+                                    <img src="${poster}" alt="${movie.title} Poster" width="100"> 
+                                    ${movie.title} (Episode ${movie.episode_id})
+                                </li>
+                            `;
+                        });
+                        movieList += `</ul>`;
+
+                        reviewDescription.innerHTML = movieList;
+                        reviewCon.appendChild(clone);
+                    })
+                    .catch(err => {
+                        reviewCon.innerHTML = "Error fetching movie details.";
+                        console.error("Error fetching movies:", err);
+                    });
+            })
+            .catch(function(err) {
+                reviewCon.innerHTML = "No movies available for this character.";
+                console.error("Error fetching character details:", err);
+            });
+    }
+
+    getPeople(); 
 })();
