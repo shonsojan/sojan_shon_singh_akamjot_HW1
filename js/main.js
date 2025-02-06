@@ -4,6 +4,8 @@
     const reviewCon = document.querySelector("#review-con");
     const baseUrl = `https://swapi.dev/api`;
 
+
+
    
     function getMoviePoster(episodeId) {
     
