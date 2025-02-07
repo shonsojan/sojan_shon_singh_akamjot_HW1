@@ -1,25 +1,32 @@
+@use "../abstracts/variables" as v;
+
 body {
-    font-family: 'Open Sans', Arial, sans-serif;
+  font-family: v.$body-font-family;
 }
 
-p {
-    margin-bottom: 20px;
+header h2 {
+  font-family: v.$heading-font-family;
+  font-size: 35px;
+  color: rgb(254, 254, 60);
+  padding-bottom: 40px;
 }
 
 h2 {
-    margin-top: 20px;
-    font-weight: 600;
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-family: v.$sub-heading-font-family;
+  margin-top: 60px;
+  font-weight: 600;
+  color: rgb(185, 225, 236);
 }
 
 h3 {
-    font-weight: 600;
-    font-size: 18px;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 p {
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 26px;
+  font-weight: 300;
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: rgb(238, 238, 115);
+  line-height: 50px;
 }

@@ -1,4 +1,5 @@
 (() => {
+
     const characterBox = document.querySelector("#character-box");
     const reviewTemplate = document.querySelector("#review-template");
     const reviewCon = document.querySelector("#review-con");
@@ -109,4 +110,5 @@
     }
 
     getPeople(); 
+
 })();
